@@ -17,4 +17,4 @@ The images bellow were generated running the shaders inside [Proceduray](https:/
 
 ## Procedural Scene
 
-![](figs/procedural_scene.png)
+[![](figs/procedural_scene.png)](https://youtu.be/TQqFwlbi9Vc)
