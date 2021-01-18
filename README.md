@@ -5,7 +5,7 @@ The images bellow were generated running the shaders inside [Proceduray](https:/
 
 ## Authors
 
-[Vinícius da Silva](dsilvavinicius.github.io), [Tiago Novello](https://sites.google.com/site/tiagonovellodebrito), [Hélio Lopes](http://www-di.inf.puc-rio.br/~lopes) and [Luiz Velho](http://lvelho.impa.br/).
+[Vinícius da Silva](http://dsilvavinicius.github.io), [Tiago Novello](https://sites.google.com/site/tiagonovellodebrito), [Hélio Lopes](http://www-di.inf.puc-rio.br/~lopes) and [Luiz Velho](http://lvelho.impa.br/).
 
 ## Julia Sets
 
