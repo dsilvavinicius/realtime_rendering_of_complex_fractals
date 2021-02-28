@@ -7,7 +7,7 @@ The images bellow were generated running the shaders inside [Proceduray](https:/
 
 [Vinícius da Silva](http://dsilvavinicius.github.io), [Tiago Novello](https://sites.google.com/site/tiagonovellodebrito), [Hélio Lopes](http://www-di.inf.puc-rio.br/~lopes) and [Luiz Velho](http://lvelho.impa.br/).
 
-# Acknowledgments
+## Acknowledgments
 
 Adam Marrs, Pete Shirley and Ingo Wald for editing the book. Angelo Pesce for editing the chapter and associated section. Inigo Quilez for very useful reference material.
 
