@@ -1,6 +1,6 @@
 # Real-time Rendering of Complex Fractals
 
-This is the DXR device source code of the chapter **Real-time Rendering of Complex Fractals** of **Ray Tracing Gems 2**.
+This is the official DXR device source code of the chapter **Real-time Rendering of Complex Fractals**, from **Ray Tracing Gems 2**.
 The images bellow were generated running the shaders inside [Proceduray](https://arxiv.org/abs/2012.10357), which is the recommended way to setup the host code for those shaders.
 
 ## Authors
