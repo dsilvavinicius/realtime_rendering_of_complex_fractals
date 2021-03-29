@@ -9,7 +9,7 @@ The images bellow were generated running the shaders inside [Proceduray](https:/
 
 ## Acknowledgments
 
-Adam Marrs, Pete Shirley and Ingo Wald for editing the book. Angelo Pesce for editing the chapter and associated section. Inigo Quilez for very useful reference material.
+Adam Marrs, Pete Shirley and Ingo Wald for editing the book. Angelo Pesce for editing the chapter and associated section. Inigo Quilez for the very useful reference material.
 
 ## Julia Sets
 
