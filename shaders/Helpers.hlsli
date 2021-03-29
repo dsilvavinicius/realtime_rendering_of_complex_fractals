@@ -58,7 +58,7 @@ float4 CalculatePhongLighting(in float4 albedo, in float3 normal, in bool isInSh
 //***************************************************************************
 
 // Trace a radiance ray into the scene and returns a shaded color.
-float4 TraceRadianceRay(in Ray ray, in UINT currentRayRecursionDepth, float4 color = float4(0.f, 0.f, 0.f, 0.f))
+float4 TraceRadianceRay(in Ray ray, in uint currentRayRecursionDepth, float4 color = float4(0.f, 0.f, 0.f, 0.f))
 {
     if (currentRayRecursionDepth >= MAX_RAY_RECURSION_DEPTH)
     {
@@ -86,7 +86,7 @@ float4 TraceRadianceRay(in Ray ray, in UINT currentRayRecursionDepth, float4 col
 }
 
 // Trace a shadow ray and return true if it hits any geometry.
-bool TraceShadowRayAndReportIfHit(in Ray ray, in UINT currentRayRecursionDepth)
+bool TraceShadowRayAndReportIfHit(in Ray ray, in uint currentRayRecursionDepth)
 {
     if (currentRayRecursionDepth >= MAX_RAY_RECURSION_DEPTH)
     {

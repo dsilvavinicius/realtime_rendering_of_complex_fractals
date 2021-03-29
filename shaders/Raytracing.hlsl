@@ -3,7 +3,7 @@
 
 #define HLSL
 #include "engine/ShaderCompat.h"
-#include "RaytracingShaderHelper.hlsli"
+#include "engine/RaytracingShaderHelper.hlsli"
 
 static float gStep = 4.;
 static float gMaxLenght = 600.;
@@ -37,7 +37,7 @@ void Raygen()
     Ray ray = GenerateCameraRay(DispatchRaysIndex().xy, g_sceneCB.cameraPosition.xyz, g_sceneCB.projectionToWorld);
  
     // Cast a ray into the scene and retrieve a shaded color.
-    UINT currentRecursionDepth = 0;
+    uint currentRecursionDepth = 0;
     float4 color = TraceRadianceRay(ray, currentRecursionDepth);
 
     // Write the raytraced color to the output texture.

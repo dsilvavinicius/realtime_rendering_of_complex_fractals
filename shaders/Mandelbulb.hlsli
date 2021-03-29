@@ -50,7 +50,7 @@ float mdist( in float3 p, out float4 resColor )
     return 0.25*log(m)*sqrt(m)/dz;
 }
 
-float3 calcNormal( in float3 pos, in float t )
+float3 CalcNormal( in float3 pos, in float t )
 {
     float4 tmp;
     float2 e = float2(1.0,-1.0)*0.5773 * 0.0001;
@@ -103,7 +103,7 @@ bool MandelbulbDistance(in Ray ray, in float time, int instanceId, out float thi
     
     if( t<dis.y )
     {
-        float3 hitSurfaceNormal = calcNormal(pos, t);
+        float3 hitSurfaceNormal = CalcNormal(pos, t);
         thit = t;
         attr.normal = hitSurfaceNormal;
         attr.color = trap;

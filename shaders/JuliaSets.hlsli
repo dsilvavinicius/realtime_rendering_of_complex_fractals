@@ -9,18 +9,18 @@ float3 float3_ctor(float x0)
     return float3(x0, x0, x0);
 }
 
-float4 qSquare_float4(in float4 q)
+float4 QuatSquare(in float4 q)
 {
     return float4(((((q.x * q.x) - (q.y * q.y)) - (q.z * q.z)) - (q.w * q.w)), ((2.0 * q.x) * q.yzw));
 }
 
-float4 qCube_float4(in float4 q)
+float4 QuatCube(in float4 q)
 {
     float4 q2 = (q * q);
     return float4((q.x * (((q2.x - (3.0 * q2.y)) - (3.0 * q2.z)) - (3.0 * q2.w))), (q.yzw * ((((3.0 * q2.x) - q2.y) - q2.z) - q2.w)));
 }
 
-float qLength2_float4(in float4 q)
+float QuatLength(in float4 q)
 {
     return dot(q, q);
 }
@@ -38,7 +38,7 @@ float2 iSphere(in float3 ro, in float3 rd, in float rad)
     return float2(-b - h, -b + h);
 }
 
-float2 jdist(in float3 p, in float4 c, in int iMax)
+float2 JDist(in float3 p, in float4 c, in int iMax)
 {
     float4 z = float4(p, 0.0);
     float dz2 = 1.0;
@@ -47,9 +47,9 @@ float2 jdist(in float3 p, in float4 c, in int iMax)
     
     for (int i = 0; i < iMax; i++)
     {
-        dz2 *= 9.0 * qLength2_float4(qSquare_float4(z));
-        z = qCube_float4(z) + c;
-        m2 = qLength2_float4(z);
+        dz2 *= 9.0 * QuatLength(QuatSquare(z));
+        z = QuatCube(z) + c;
+        m2 = QuatLength(z);
         if (m2 > 256.0)
         {
             break;
@@ -60,18 +60,18 @@ float2 jdist(in float3 p, in float4 c, in int iMax)
     float d = (0.25 * log(m2)) * sqrt((m2 / dz2));
     return float2(d, n);
 }
-float3 calcNormal(in float3 pos, in float4 c = kc, in int iMax = 200)
+float3 CalcNormal(in float3 pos, in float4 c = kc, in int iMax = 200)
 {
     const float2 e = float2(1.0f, -1.0f) * 0.5773f * kPrecis;
     
     return normalize(
-        e.xyy * jdist(pos + e.xyy, c, iMax).x +
-        e.yyx * jdist(pos + e.yyx, c, iMax).x +
-        e.yxy * jdist(pos + e.yxy, c, iMax).x +
-        e.xxx * jdist(pos + e.xxx, c, iMax).x
+        e.xyy * JDist(pos + e.xyy, c, iMax).x +
+        e.yyx * JDist(pos + e.yyx, c, iMax).x +
+        e.yxy * JDist(pos + e.yxy, c, iMax).x +
+        e.xxx * JDist(pos + e.xxx, c, iMax).x
     );
 }
-float2 raycast(in float3 ro, in float3 rd, in float4 c = kc, in float deltaT = 0.0, in int iMax = 200)
+float2 SphereTracing(in float3 ro, in float3 rd, in float4 c = kc, in float deltaT = 0.0, in int iMax = 200)
 {
     float tmax = 7000.f;
     float tmin = kPrecis;
@@ -139,7 +139,7 @@ float2 raycast(in float3 ro, in float3 rd, in float4 c = kc, in float deltaT = 0
     {
         for (int i = 0; i < 1024; i++)
         {
-            res = jdist(ro + (rd * t), c, iMax);
+            res = JDist(ro + (rd * t), c, iMax);
             if (res.x < kPrecis)
             {
                 break;
@@ -169,7 +169,7 @@ float2 raycast(in float3 ro, in float3 rd, in float4 c = kc, in float deltaT = 0
     res.x = s;
     return res;
 }
-float3 colorSurface(in float3 pos, in float2 tn)
+float3 ColorSurface(in float3 pos, in float2 tn)
 {
     float3 col = 0.5 + 0.5 * cos(log2(tn.y) * 0.9 + 3.5 + float3(0.0, 0.6, 1.0));
     
@@ -188,7 +188,7 @@ float3 colorSurface(in float3 pos, in float2 tn)
     return surfaceColor;
 }
 
-bool JuliaDistance(in float3 ro, in float3 rd, inout float3 normal, inout float2 resT, in float time=0.3f)
+bool IntersectionJuliaTest(in float3 ro, in float3 rd, inout float3 normal, inout float2 resT, in float time=0.3f)
 {
     resT = 1e20;
     
@@ -196,20 +196,20 @@ bool JuliaDistance(in float3 ro, in float3 rd, inout float3 normal, inout float2
     
     ro.y += -1.f; //for the scene with multiples objects
 
-    float2 tn = raycast(ro, rd);
+    float2 tn = SphereTracing(ro, rd);
     
     bool cond = (tn.x >= 0.0);
     if (cond)
     {
         float3 pos = (ro + (tn.x * rd));
-        normal = calcNormal(pos);
+        normal = CalcNormal(pos);
         resT = tn;
     }
     return cond;
 }
 
 [shader("intersection")]
-void Intersection_Julia()
+void IntersectionJulia()
 {
     Ray localRay = GetRayInAABBPrimitiveLocalSpace();
 
@@ -217,7 +217,7 @@ void Intersection_Julia()
     ProceduralPrimitiveAttributes attr = { {0.f, 0.f, 0.f}, {0.f, 0.f, 0.f, 1.f} };
     
     float3 pos;
-    bool primitiveTest = JuliaDistance(localRay.origin, localRay.direction, attr.normal, thit, g_sceneCB.elapsedTime);
+    bool primitiveTest = IntersectionJuliaTest(localRay.origin, localRay.direction, attr.normal, thit, g_sceneCB.elapsedTime);
    
     if (primitiveTest && thit.x < RayTCurrent())
     {
@@ -230,7 +230,7 @@ void Intersection_Julia()
 }
 
 [shader("closesthit")]
-void ClosestHit_Julia(inout RayPayload rayPayload, in ProceduralPrimitiveAttributes attr)
+void ClosestHitJulia(inout RayPayload rayPayload, in ProceduralPrimitiveAttributes attr)
 {
     // Shadow component.
     // Trace a shadow ray.
@@ -241,7 +241,7 @@ void ClosestHit_Julia(inout RayPayload rayPayload, in ProceduralPrimitiveAttribu
     float3 pos = ObjectRayOrigin() + RayTCurrent() * ObjectRayDirection();
     float3 dir = WorldRayDirection();
     
-    float4 albedo = float4(3.5*colorSurface(pos, attr.color.xy), 1.f);
+    float4 albedo = float4(3.5*ColorSurface(pos, attr.color.xy), 1.f);
     
     if (rayPayload.recursionDepth == MAX_RAY_RECURSION_DEPTH - 1)
     {
